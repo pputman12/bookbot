@@ -1,43 +1,49 @@
 def main():
     with open("books/frankenstein.txt") as f:
         file_contents = f.read()
-    words = file_contents.split()
-    counted = count_char(file_contents)
+    dict_list = convert_dict_to_list_dicts(count_chars(file_contents))
+    dict_list.sort(reverse=True, key=sort_on)
 
+    for item in dict_list:
+        print(f"'The '{item["char"]}' character was found {item["num"]} times")
+ 
 
-    counted_list = convert_dict_to_list(counted)
-    counted_list.sort(reverse=True, key=sort_on)
-    
-    for dict in counted_list:
-        char   = dict["char"]
-        number = dict["num"]
-        print(f"'{char}': {number}")	
-                
-
-def count_char(file_contents):
-    count = {}
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    for char in file_contents:
-        char = char.lower()
-        if char in alphabet:
-            if char in count:
-                count[char] += 1
-            else:
-                count[char] = 1
-    return count 
-     
-def sort_on(dict):
-    return dict["num"]
-
-
-def convert_dict_to_list(dict):
-    dict_list = []
+def convert_dict_to_list_dicts(dict):
+    item_list = []
     for k,v in dict.items():
-        entry = {
+        mydict = {
             "char": k,
             "num": v,
         }
-        dict_list.append(entry)
-    return dict_list
+        item_list.append(mydict)
+    return item_list 
+    
+    
+
+
+
+def count_words(text):
+    words = text.split()
+    return len(words)
+
+
+def count_chars(text):
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    char_dict = {}
+    for char in text:
+        char = char.lower()
+        if char.isalpha():
+            if char in char_dict:
+                char_dict[char] += 1
+            else:
+                char_dict[char] = 1
+    return char_dict
+
+def print_dict(dict):
+    for k,v in dict.items():
+        print(f"- ''{k}': {v}'") 
+
+def sort_on(dict):
+    return dict["num"]
 
 main()
